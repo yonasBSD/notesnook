@@ -74,13 +74,15 @@ export default function List(props: ListProps) {
     notebooksListMode === "compact";
 
   const groupType =
-    props.renderedInRoute === "Notes"
-      ? "home"
-      : props.renderedInRoute === "Favorites"
-        ? "favorites"
-        : props.renderedInRoute === "Trash" || props.dataType === "trash"
-          ? "trash"
-          : `${props.dataType}s`;
+    props.renderedInRoute === "Archive"
+      ? "archive"
+      : props.renderedInRoute === "Notes"
+        ? "home"
+        : props.renderedInRoute === "Favorites"
+          ? "favorites"
+          : props.renderedInRoute === "Trash" || props.dataType === "trash"
+            ? "trash"
+            : `${props.dataType}s`;
 
   const groupOptions = useGroupOptions(groupType);
 

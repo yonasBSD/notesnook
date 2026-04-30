@@ -44,7 +44,6 @@ import { useUserStore } from "./stores/use-user-store";
 import RNBootSplash from "react-native-bootsplash";
 import AppLocked from "./components/app-lock";
 import { useSettingStore } from "./stores/use-setting-store";
-import ScreenGuardModule from "react-native-screenguard";
 I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
 I18nManager.swapLeftAndRightInRTL(false);
@@ -52,7 +51,6 @@ const { appLockEnabled, appLockMode } = SettingsService.get();
 if (appLockEnabled || appLockMode !== "none") {
   useUserStore.getState().lockApp(true);
 }
-ScreenGuardModule.initSettings();
 RNBootSplash.hide({
   fade: true
 });
