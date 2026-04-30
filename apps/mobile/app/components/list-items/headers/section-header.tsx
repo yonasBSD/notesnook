@@ -150,7 +150,8 @@ export const SectionHeader = React.memo<
                   hidden={
                     dataType !== "note" &&
                     dataType !== "notebook" &&
-                    screen !== "Notes"
+                    screen !== "Notes" &&
+                    screen !== "Search"
                   }
                   style={{
                     width: 25,
@@ -163,9 +164,11 @@ export const SectionHeader = React.memo<
                   }
                   onPress={() => {
                     SettingsService.set({
-                      [dataType !== "notebook"
-                        ? "notesListMode"
-                        : "notebooksListMode"]: !isCompactModeEnabled
+                      [dataType === "notebook"
+                        ? "notebooksListMode"
+                        : dataType === "searchResult"
+                          ? "searchListMode"
+                          : "noteListMode"]: !isCompactModeEnabled
                         ? "compact"
                         : "normal"
                     });
