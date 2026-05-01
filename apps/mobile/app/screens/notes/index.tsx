@@ -193,11 +193,14 @@ const NotesPage = ({
         hasSearch={true}
         id={route.name === "Monographs" ? "Monographs" : params?.current?.id}
         onSearch={() => {
-          if (!item) return;
+          if (route.name !== "Monographs" && !item) return;
+
           const selector =
             route.name === "Monographs"
               ? db.monographs.all
-              : db.relations.from(item, "note").selector;
+              : item && db.relations.from(item, "note").selector;
+
+          if (!selector) return;
 
           Navigation.push("Search", {
             placeholder: strings.searchInRoute(title || route.name),
