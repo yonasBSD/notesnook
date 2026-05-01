@@ -57,7 +57,7 @@ export const SectionHeader = React.memo<
   }: SectionHeaderProps) {
     const { colors } = useThemeColors();
     const isCompactModeEnabled = useIsCompactModeEnabled(
-      dataType as "note" | "notebook"
+      dataType as "note" | "notebook" | "searchResult"
     );
 
     return (
@@ -168,7 +168,7 @@ export const SectionHeader = React.memo<
                         ? "notebooksListMode"
                         : dataType === "searchResult"
                           ? "searchListMode"
-                          : "noteListMode"]: !isCompactModeEnabled
+                          : "notesListMode"]: !isCompactModeEnabled
                         ? "compact"
                         : "normal"
                     });
