@@ -148,10 +148,15 @@ const Sort = ({
       >
         {Object.keys(SORT).map((item) => {
           const sortOptionVisibility = {
-            relevance: screen === "Search",
-            dueDate: screen === "Reminders",
-            dateModified: screen === "Tags" || screen === "Reminders",
-            dateEdited: screen !== "Tags" && screen !== "Reminders"
+            dateCreated: groupType !== "trash",
+            relevance: groupType === "search",
+            dueDate: groupType === "reminders",
+            dateModified: groupType === "reminders" || groupType === "tags",
+            dateEdited:
+              groupType !== "tags" &&
+              groupType !== "reminders" &&
+              groupType !== "trash",
+            dateDeleted: groupType === "trash"
           };
 
           // Check if this sort option should be skipped for the current screen
@@ -179,10 +184,7 @@ const Sort = ({
               onPress={async () => {
                 const _groupOptions: GroupOptions = {
                   ...groupOptions,
-                  sortBy:
-                    type === "trash"
-                      ? "dateDeleted"
-                      : (item as SortOptions["sortBy"])
+                  sortBy: item as SortOptions["sortBy"]
                 };
                 await updateGroupOptions(_groupOptions);
               }}
