@@ -45,24 +45,15 @@ import Paragraph from "../../ui/typography/paragraph";
 const Sort = ({
   type,
   screen,
-  hideGroupOptions
+  hideGroupOptions,
+  group: groupType
 }: {
   type: ItemType;
   screen?: RouteName;
+  group: GroupingKey;
   hideGroupOptions?: boolean;
 }) => {
   const { colors } = useThemeColors();
-
-  const groupType =
-    screen === "Archive"
-      ? "archive"
-      : screen === "Search"
-      ? "search"
-      : screen === "Notes"
-      ? "home"
-      : screen === "Trash" || type === "trash"
-      ? "trash"
-      : ((type + "s") as GroupingKey);
 
   const [groupOptions, setGroupOptions] = useState(
     db.settings.getGroupOptions(groupType)

@@ -214,6 +214,7 @@ const NotesPage = ({
         <List
           data={notes}
           dataType="note"
+          groupType="notes"
           onRefresh={onRequestUpdate}
           loading={false}
           renderedInRoute={route.name}
