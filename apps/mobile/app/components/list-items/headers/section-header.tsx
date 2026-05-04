@@ -17,7 +17,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import { GroupHeader, GroupOptions, ItemType } from "@notesnook/core";
+import {
+  GroupHeader,
+  GroupingKey,
+  GroupOptions,
+  ItemType
+} from "@notesnook/core";
 import { strings } from "@notesnook/intl";
 import { useThemeColors } from "@notesnook/theme";
 import React from "react";
@@ -40,6 +45,7 @@ type SectionHeaderProps = {
   color?: string;
   screen?: RouteName;
   groupOptions: GroupOptions;
+  group: GroupingKey;
   onOpenJumpToDialog: () => void;
 };
 
@@ -53,6 +59,7 @@ export const SectionHeader = React.memo<
     color,
     screen,
     groupOptions,
+    group,
     onOpenJumpToDialog
   }: SectionHeaderProps) {
     const { colors } = useThemeColors();
@@ -133,6 +140,7 @@ export const SectionHeader = React.memo<
                         <Sort
                           screen={screen}
                           type={dataType}
+                          group={group}
                           hideGroupOptions={
                             screen === "Reminders" || screen === "Search"
                           }

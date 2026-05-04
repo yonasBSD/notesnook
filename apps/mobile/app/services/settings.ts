@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import { NativeModules, Platform } from "react-native";
+import { Platform } from "react-native";
 import { MMKV } from "../common/database/mmkv";
 import {
   SettingStore,
@@ -29,6 +29,7 @@ import { scale, updateSize } from "../utils/size";
 import { DatabaseLogger } from "../common/database";
 import { useUserStore } from "../stores/use-user-store";
 import ScreenGuardModule from "react-native-screenguard";
+ScreenGuardModule.initSettings();
 
 function reset() {
   const settings = get();
