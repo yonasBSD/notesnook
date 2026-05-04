@@ -317,6 +317,7 @@ export function ListItemWrapper(props: ListItemWrapperProps) {
 }
 
 function getDate(item: Notebook | Note, groupType?: GroupingKey): number {
+  console.log(groupType);
   return (
     getSortValue(
       groupType
