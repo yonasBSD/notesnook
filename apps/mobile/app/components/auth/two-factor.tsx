@@ -35,6 +35,9 @@ import Heading from "../ui/typography/heading";
 import Paragraph from "../ui/typography/paragraph";
 import { DefaultAppStyles } from "../../utils/styles";
 import { presentDialog } from "../dialog/functions";
+import { Notice } from "../ui/notice";
+import AppIcon from "../ui/AppIcon";
+import Clipboard from "@react-native-clipboard/clipboard";
 
 type MFAInfo = {
   primaryMethod: string;
@@ -52,7 +55,8 @@ const TwoFactorVerification = ({
       method: string;
       code: string;
     },
-    callback: (result: any) => void
+    callback: (result: any) => void,
+    onerror: (e: Error) => void
   ) => Promise<void>;
   mfaInfo: MFAInfo;
   onCancel: () => void;
@@ -70,11 +74,13 @@ const TwoFactorVerification = ({
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<TextInput>(null);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState<Error | undefined>(undefined)
 
   const onNext = async () => {
     if (!code.current || code.current.length < 6 || !currentMethod.method)
       return;
     setLoading(true);
+    setError(undefined);
     inputRef.current?.blur();
     await onMfaLogin(
       {
@@ -86,6 +92,9 @@ const TwoFactorVerification = ({
           eSendEvent(eCloseSimpleDialog, "two_factor_verify");
         }
         setLoading(false);
+      },
+      (e) => {
+        setError(e);
       }
     );
     setLoading(false);
@@ -252,7 +261,7 @@ const TwoFactorVerification = ({
               }
               enablesReturnKeyAutomatically
               containerStyle={{
-                minWidth: "50%"
+                minWidth :"50%"
               }}
               wrapperStyle={{
                 height: 60
@@ -284,6 +293,16 @@ const TwoFactorVerification = ({
               onPress={onRequestSecondaryMethod}
               height={30}
             />
+
+            {
+              error ? <Paragraph numberOfLines={4} onPress={() => {
+               
+              }} color={colors.error.accent} style={{
+                textAlign: "center"
+              }}>
+              <AppIcon color={colors.error.accent} name="alert-circle-outline" size={AppFontSize.sm - 1} /> {error?.message}
+            </Paragraph> : null
+            }
           </>
         ) : (
           <>
@@ -338,7 +357,8 @@ TwoFactorVerification.present = (
       method: string;
       code: string;
     },
-    callback: (result: any) => void
+    callback: (result: any) => void,
+    onerror: (e: Error) => void
   ) => Promise<void>,
   data: MFAInfo,
   onCancel: () => void,
