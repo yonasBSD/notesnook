@@ -27,17 +27,15 @@ import useTimer from "../../hooks/use-timer";
 import { eSendEvent, ToastManager } from "../../services/event-manager";
 import { eCloseSimpleDialog } from "../../utils/events";
 import { AppFontSize } from "../../utils/size";
+import { DefaultAppStyles } from "../../utils/styles";
+import { presentDialog } from "../dialog/functions";
+import AppIcon from "../ui/AppIcon";
 import { Button } from "../ui/button";
 import { IconButton } from "../ui/icon-button";
 import Input from "../ui/input";
 import { Pressable } from "../ui/pressable";
 import Heading from "../ui/typography/heading";
 import Paragraph from "../ui/typography/paragraph";
-import { DefaultAppStyles } from "../../utils/styles";
-import { presentDialog } from "../dialog/functions";
-import { Notice } from "../ui/notice";
-import AppIcon from "../ui/AppIcon";
-import Clipboard from "@react-native-clipboard/clipboard";
 
 type MFAInfo = {
   primaryMethod: string;
@@ -74,7 +72,7 @@ const TwoFactorVerification = ({
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<TextInput>(null);
   const [sending, setSending] = useState(false);
-  const [error, setError] = useState<Error | undefined>(undefined)
+  const [error, setError] = useState<Error | undefined>(undefined);
 
   const onNext = async () => {
     if (!code.current || code.current.length < 6 || !currentMethod.method)
@@ -261,7 +259,7 @@ const TwoFactorVerification = ({
               }
               enablesReturnKeyAutomatically
               containerStyle={{
-                minWidth :"50%"
+                minWidth: "50%"
               }}
               wrapperStyle={{
                 height: 60
@@ -294,15 +292,23 @@ const TwoFactorVerification = ({
               height={30}
             />
 
-            {
-              error ? <Paragraph numberOfLines={4} onPress={() => {
-               
-              }} color={colors.error.accent} style={{
-                textAlign: "center"
-              }}>
-              <AppIcon color={colors.error.accent} name="alert-circle-outline" size={AppFontSize.sm - 1} /> {error?.message}
-            </Paragraph> : null
-            }
+            {error ? (
+              <Paragraph
+                numberOfLines={4}
+                onPress={() => {}}
+                color={colors.error.accent}
+                style={{
+                  textAlign: "center"
+                }}
+              >
+                <AppIcon
+                  color={colors.error.accent}
+                  name="alert-circle-outline"
+                  size={AppFontSize.sm - 1}
+                />{" "}
+                {error?.message}
+              </Paragraph>
+            ) : null}
           </>
         ) : (
           <>
