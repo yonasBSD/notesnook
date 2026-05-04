@@ -46,6 +46,8 @@ import { AuthHeader } from "./header";
 import { SignupContext } from "./signup-context";
 import { RouteParams } from "../../stores/use-navigation-store";
 import SettingsService from "../../services/settings";
+import AppIcon from "../ui/AppIcon";
+import isEmail from "validator/lib/isEmail";
 
 const SignupSteps = {
   signup: 0,
@@ -69,6 +71,7 @@ export const Signup = ({
   const confirmPasswordInputRef = useRef<TextInput>(null);
   const confirmPassword = useRef<string>(undefined);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
   const [loading, setLoading] = useState(false);
   const setUser = useUserStore((state) => state.setUser);
   const setLastSynced = useUserStore((state) => state.setLastSynced);
@@ -78,13 +81,17 @@ export const Signup = ({
 
   const validateInfo = () => {
     if (!password.current || !email.current || !confirmPassword.current) {
-      ToastManager.show({
-        heading: strings.allFieldsRequired(),
-        message: strings.allFieldsRequiredDesc(),
-        type: "error",
-        context: "local"
-      });
+      setErrorMessage(strings.allFieldsRequiredDesc());
+      return false;
+    }
 
+    if (!isEmail(email.current)) {
+      setErrorMessage(strings.emailInvalid());
+      return false;
+    }
+
+    if (password.current !== confirmPassword.current) {
+      setErrorMessage(strings.passwordNotMatched());
       return false;
     }
 
@@ -92,6 +99,7 @@ export const Signup = ({
   };
 
   const signup = async () => {
+    setErrorMessage(undefined);
     if (!validateInfo() || error) return;
     if (loading) return;
 
@@ -277,6 +285,7 @@ export const Signup = ({
                   blurOnSubmit={false}
                   validationType="confirmPassword"
                   customValidator={() => password.current || ""}
+                  errorMessage={strings.passwordNotMatched()}
                   placeholder={strings.confirmPassword()}
                   marginBottom={12}
                   onSubmit={() => {
@@ -285,7 +294,7 @@ export const Signup = ({
                 />
 
                 <Button
-                  title={!loading ? "Continue" : null}
+                  title={!loading ? strings.continue() : null}
                   type="accent"
                   loading={loading}
                   onPress={() => {
@@ -319,6 +328,25 @@ export const Signup = ({
                     </Paragraph>
                   </Paragraph>
                 </TouchableOpacity>
+
+                {errorMessage ? (
+                  <Paragraph
+                    numberOfLines={4}
+                    onPress={() => {}}
+                    color={colors.error.accent}
+                    style={{
+                      textAlign: "center",
+                      marginTop: DefaultAppStyles.GAP_VERTICAL
+                    }}
+                  >
+                    <AppIcon
+                      color={colors.error.accent}
+                      name="alert-circle-outline"
+                      size={AppFontSize.sm - 1}
+                    />{" "}
+                    {errorMessage}
+                  </Paragraph>
+                ) : null}
               </View>
 
               <View
