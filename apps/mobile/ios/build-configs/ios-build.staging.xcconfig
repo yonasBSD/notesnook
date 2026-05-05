@@ -1,6 +1,6 @@
 // Staging iOS build identifiers
-IOS_CURRENT_PROJECT_VERSION = 2181
-IOS_MARKETING_VERSION = 3.3.21
+IOS_CURRENT_PROJECT_VERSION = 2182
+IOS_MARKETING_VERSION = 3.3.22
 IOS_MAIN_BUNDLE_ID = org.streetwriters.notesnook
 IOS_WIDGET_BUNDLE_ID = org.streetwriters.notesnook.notewidget
 IOS_SHARE_BUNDLE_ID = org.streetwriters.notesnook.share

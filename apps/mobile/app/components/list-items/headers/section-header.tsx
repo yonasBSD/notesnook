@@ -47,6 +47,7 @@ type SectionHeaderProps = {
   groupOptions: GroupOptions;
   group: GroupingKey;
   onOpenJumpToDialog: () => void;
+  itemCount?: number;
 };
 
 export const SectionHeader = React.memo<
@@ -60,12 +61,15 @@ export const SectionHeader = React.memo<
     screen,
     groupOptions,
     group,
-    onOpenJumpToDialog
+    onOpenJumpToDialog,
+    itemCount
   }: SectionHeaderProps) {
     const { colors } = useThemeColors();
     const isCompactModeEnabled = useIsCompactModeEnabled(
       dataType as "note" | "notebook" | "searchResult"
     );
+
+    console.log(item);
 
     return (
       <View
@@ -111,7 +115,9 @@ export const SectionHeader = React.memo<
               color={color || colors.primary.accent}
             >
               {!item.title || item.title === ""
-                ? strings.pinned().toUpperCase()
+                ? screen === "Search"
+                  ? strings.results(itemCount || 0)
+                  : strings.pinned().toUpperCase()
                 : item.title.toUpperCase()}
             </Heading>
           </Pressable>
@@ -202,6 +208,7 @@ export const SectionHeader = React.memo<
   },
   (prev, next) => {
     if (prev.item.title !== next.item.title) return false;
+    if (prev.itemCount !== next.itemCount) return false;
     if (prev.groupOptions?.groupBy !== next.groupOptions.groupBy) return false;
     if (prev.groupOptions?.sortDirection !== next.groupOptions.sortDirection)
       return false;

@@ -305,6 +305,7 @@ export function ListItemWrapper(props: ListItemWrapperProps) {
               dataType={item.type}
               color={props.customAccentColor}
               groupOptions={groupOptions}
+              itemCount={items?.placeholders.length}
               onOpenJumpToDialog={() => {
                 eSendEvent(eOpenJumpToDialog, {
                   ref: props.scrollRef,
