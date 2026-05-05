@@ -89,8 +89,6 @@ export const SessionExpired = () => {
 
   const open = React.useCallback(async () => {
     try {
-      console.log("open...");
-      throw new Error("test");
       const res = await db.tokenManager.getToken();
       if (!res) throw new Error("no token found");
       if (db.tokenManager._isTokenExpired(res))
