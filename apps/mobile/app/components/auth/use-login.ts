@@ -39,7 +39,7 @@ export const useLogin = (
   onFinishLogin?: () => void,
   sessionExpired = false
 ) => {
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(false);
   const setUser = useUserStore((state) => state.setUser);
   const [step, setStep] = useState(LoginSteps.emailAuth);
@@ -142,12 +142,7 @@ export const useLogin = (
   const finishWithError = async (e: Error) => {
     if (e.message === "invalid_grant") setStep(LoginSteps.emailAuth);
     setLoading(false);
-    ToastManager.show({
-      heading: strings.loginFailed(),
-      message: e.message,
-      type: "error",
-      context: "local"
-    });
+    setError(e);
   };
 
   const finishLogin = async () => {
