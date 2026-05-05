@@ -28,6 +28,7 @@ import SettingsService from "../../services/settings";
 import { useUserStore } from "../../stores/use-user-store";
 import { eCloseSimpleDialog } from "../../utils/events";
 import TwoFactorVerification from "./two-factor";
+import { createFormRef } from "../ui/input/form-input";
 
 export const LoginSteps = {
   emailAuth: 1,
@@ -43,41 +44,29 @@ export const useLogin = (
   const [loading, setLoading] = useState(false);
   const setUser = useUserStore((state) => state.setUser);
   const [step, setStep] = useState(LoginSteps.emailAuth);
-  const email = useRef<string>(undefined);
-  const password = useRef<string>(undefined);
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
-
-  const validateInfo = () => {
-    if (
-      (!password.current && step === LoginSteps.passwordAuth) ||
-      (!email.current && step === LoginSteps.emailAuth)
-    ) {
-      ToastManager.show({
-        heading: strings.allFieldsRequired(),
-        message: strings.allFieldsRequiredDesc(),
-        type: "error",
-        context: "local"
-      });
-
-      return false;
-    }
-
-    return true;
-  };
+  const formRef = useRef(
+    createFormRef({
+      email: "",
+      password: ""
+    })
+  );
 
   const login = async () => {
-    if (!validateInfo() || error) return;
     try {
       if (loading) return;
+      setError(undefined);
       setLoading(true);
       switch (step) {
         case LoginSteps.emailAuth: {
-          if (!email.current) {
+          if (formRef.current.validateField("email")) {
             setLoading(false);
             return;
           }
-          const mfaInfo = await db.user.authenticateEmail(email.current);
+          const mfaInfo = await db.user.authenticateEmail(
+            formRef.current.getValue("email")
+          );
 
           if (mfaInfo) {
             TwoFactorVerification.present(
@@ -119,13 +108,14 @@ export const useLogin = (
           break;
         }
         case LoginSteps.passwordAuth: {
-          if (!email.current || !password.current) {
+          if (!formRef.current.validate()) {
             setLoading(false);
             return;
           }
+          const values = formRef.current.getValues();
           await db.user.authenticatePassword(
-            email.current,
-            password.current,
+            values.email,
+            values.password,
             undefined,
             sessionExpired
           );
@@ -142,7 +132,11 @@ export const useLogin = (
   const finishWithError = async (e: Error) => {
     if (e.message === "invalid_grant") setStep(LoginSteps.emailAuth);
     setLoading(false);
-    setError(e);
+    if (e.message === "Password is incorrect.") {
+      formRef.current.setError("password", e.message);
+    } else {
+      setError(e);
+    }
   };
 
   const finishLogin = async () => {
@@ -169,13 +163,12 @@ export const useLogin = (
     login,
     step,
     setStep,
-    email,
-    password,
     passwordInputRef,
     emailInputRef,
     loading,
     setLoading,
     error,
-    setError
+    setError,
+    formRef
   };
 };

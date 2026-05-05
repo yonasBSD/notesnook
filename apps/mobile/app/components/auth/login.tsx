@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import { strings } from "@notesnook/intl";
 import { useThemeColors } from "@notesnook/theme";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { DDS } from "../../services/device-detection";
@@ -37,15 +37,15 @@ import { DefaultAppStyles } from "../../utils/styles";
 import { sleep } from "../../utils/time";
 import { Dialog } from "../dialog";
 import { Progress } from "../sheets/progress";
+import AppIcon from "../ui/AppIcon";
 import { Button } from "../ui/button";
-import FormInput, { createFormRef, validators } from "../ui/input/form-input";
+import FormInput, { validators } from "../ui/input/form-input";
 import Heading from "../ui/typography/heading";
 import Paragraph from "../ui/typography/paragraph";
 import { hideAuth } from "./common";
 import { ForgotPassword } from "./forgot-password";
 import { AuthHeader } from "./header";
 import { useLogin } from "./use-login";
-import AppIcon from "../ui/AppIcon";
 
 const LoginSteps = {
   emailAuth: 1,
@@ -64,14 +64,13 @@ export const Login = ({
   const {
     step,
     setStep,
-    password,
-    email,
     emailInputRef,
     passwordInputRef,
     loading,
     setLoading,
     login,
-    error
+    error,
+    formRef
   } = useLogin(async () => {
     eSendEvent(eUserLoggedIn, true);
     await sleep(500);
@@ -94,24 +93,8 @@ export const Login = ({
   });
   const { width, height } = useWindowDimensions();
   const isTablet = width > 600;
-  const formRef = useRef(
-    createFormRef({
-      email: "",
-      password: ""
-    })
-  ).current;
-
-  const canContinue = () => {
-    if (step === LoginSteps.emailAuth) {
-      return !formRef.validateField("email");
-    }
-
-    return formRef.validate();
-  };
 
   const onContinue = () => {
-    if (loading) return;
-    if (!canContinue()) return;
     login();
   };
 
@@ -224,9 +207,6 @@ export const Login = ({
               name="email"
               formRef={formRef}
               fwdRef={emailInputRef}
-              onChangeText={(value) => {
-                email.current = value;
-              }}
               testID="input.email"
               returnKeyLabel="Next"
               returnKeyType="next"
@@ -256,9 +236,6 @@ export const Login = ({
                   name="password"
                   formRef={formRef}
                   fwdRef={passwordInputRef}
-                  onChangeText={(value) => {
-                    password.current = value;
-                  }}
                   testID="input.password"
                   returnKeyLabel={strings.done()}
                   returnKeyType="done"
@@ -282,9 +259,13 @@ export const Login = ({
                     paddingHorizontal: 0
                   }}
                   onPress={() => {
-                    if (loading || !email.current) return;
+                    if (loading) return;
                     presentSheet({
-                      component: <ForgotPassword userEmail={email.current} />
+                      component: (
+                        <ForgotPassword
+                          userEmail={formRef.current.getValue("email")}
+                        />
+                      )
                     });
                   }}
                   textStyle={{

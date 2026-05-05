@@ -74,8 +74,10 @@ export function createFormRef(initialValues: FormValues = {}): FormRef {
     errors,
     setValue(name, value) {
       values[name] = value;
-      if (errors[name]) delete errors[name];
-      notify();
+      if (errors[name]) {
+        delete errors[name];
+        notify();
+      }
     },
     getValue(name) {
       return values[name] ?? "";
@@ -196,7 +198,7 @@ export const validators = {
 
 interface FormInputProps extends TextInputProps {
   name: string;
-  formRef: FormRef;
+  formRef: RefObject<FormRef>;
   validators?: FieldValidator[];
   fwdRef?: RefObject<TextInput | null>;
   loading?: boolean;
@@ -251,19 +253,21 @@ export function FormInput({
   const [, setVersion] = useState(0);
 
   useEffect(() => {
-    formRef.registerField(name, fieldValidators);
-    const unsubscribe = formRef.subscribe(() => {
+    const form = formRef.current;
+    form.registerField(name, fieldValidators);
+    const unsubscribe = form.subscribe(() => {
       setVersion((v) => v + 1);
     });
 
     return () => {
       unsubscribe();
-      formRef.unregisterField(name);
+      form.unregisterField(name);
     };
-  }, [fieldValidators, formRef, name]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formRef, name]);
 
-  const value = formRef.getValue(name);
-  const fieldError = error || formRef.getError(name);
+  const value = formRef.current.getValue(name);
+  const fieldError = error || formRef.current.getError(name);
 
   const borderColor = useMemo(() => {
     if (fieldError) return colors.error.accent;
@@ -296,7 +300,7 @@ export function FormInput({
   };
 
   const handleChangeText = (nextValue: string) => {
-    formRef.setValue(name, nextValue);
+    formRef.current.setValue(name, nextValue);
     onChangeText?.(nextValue);
   };
 
@@ -319,7 +323,7 @@ export function FormInput({
 
         <TextInput
           {...restProps}
-          value={value}
+          defaultValue={value}
           ref={fwdRef}
           editable={!loading && restProps.editable !== false}
           onChangeText={handleChangeText}

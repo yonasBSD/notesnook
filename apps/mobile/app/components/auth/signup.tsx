@@ -68,7 +68,7 @@ export const Signup = ({
       password: "",
       confirmPassword: ""
     })
-  ).current;
+  );
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const confirmPasswordInputRef = useRef<TextInput>(null);
@@ -82,10 +82,10 @@ export const Signup = ({
 
   const signup = async () => {
     setErrorMessage(undefined);
-    if (!formRef.validate()) return;
+    if (!formRef.current.validate()) return;
     if (loading) return;
 
-    const values = formRef.getValues();
+    const values = formRef.current.getValues();
 
     setLoading(true);
     try {
@@ -110,7 +110,7 @@ export const Signup = ({
       if (
         (e as Error).message === "Unable to create an account on this email."
       ) {
-        formRef.setError("email", (e as Error).message);
+        formRef.current.setError("email", (e as Error).message);
       } else {
         setErrorMessage((e as Error).message);
       }

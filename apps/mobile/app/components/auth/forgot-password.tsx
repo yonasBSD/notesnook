@@ -40,13 +40,13 @@ export const ForgotPassword = ({ userEmail }: { userEmail: string }) => {
     createFormRef({
       email: userEmail || ""
     })
-  ).current;
+  );
   const emailInputRef = useRef<TextInput>(null);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
   const sendRecoveryEmail = async () => {
-    if (formRef.validateField("email")) {
+    if (formRef.current.validateField("email")) {
       ToastManager.show({
         heading: strings.emailRequired(),
         type: "error",
@@ -55,7 +55,7 @@ export const ForgotPassword = ({ userEmail }: { userEmail: string }) => {
       return;
     }
 
-    const values = formRef.getValues();
+    const values = formRef.current.getValues();
 
     setLoading(true);
     try {
