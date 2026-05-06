@@ -4034,6 +4034,10 @@ msgstr "Multi-layer encryption to most important notes"
 msgid "Name"
 msgstr "Name"
 
+#: src/strings.ts:2669
+msgid "Name is required."
+msgstr "Name is required."
+
 #: src/strings.ts:1688
 msgid "Native high-performance encryption"
 msgstr "Native high-performance encryption"

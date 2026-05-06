@@ -93,7 +93,7 @@ export const Dialog = ({ context = "global" }: { context?: string }) => {
       let result = false;
       try {
         result = await dialogInfo.positivePress(
-          values.current.inputValue || dialogInfo.defaultValue,
+          values.current.inputValue,
           checked
         );
       } catch (e) {

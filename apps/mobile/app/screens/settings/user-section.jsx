@@ -201,6 +201,14 @@ const SettingsUserSection = ({ item }) => {
                         inputPlaceholder: strings.enterFullName(),
                         defaultValue: userProfile?.fullName,
                         positivePress: async (value) => {
+                          if (!value || !value.trim()) {
+                            ToastManager.error(
+                              new Error(strings.nameIsRequired()),
+                              undefined,
+                              "local"
+                            );
+                            return;
+                          }
                           db.settings
                             .setProfile({
                               fullName: value

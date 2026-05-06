@@ -529,6 +529,14 @@ export const settingsGroups: SettingSection[] = [
                 positiveText: strings.delete(),
                 positivePress: async (value) => {
                   try {
+                    if (!value || !value.trim()) {
+                      ToastManager.error(
+                        new Error(strings.passwordNotEntered()),
+                        undefined,
+                        "local"
+                      );
+                      return;
+                    }
                     const verified = await db.user?.verifyPassword(value);
                     if (verified) {
                       setTimeout(async () => {

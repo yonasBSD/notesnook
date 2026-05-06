@@ -4014,6 +4014,10 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+#: src/strings.ts:2669
+msgid "Name is required."
+msgstr ""
+
 #: src/strings.ts:1688
 msgid "Native high-performance encryption"
 msgstr ""

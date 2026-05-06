@@ -161,7 +161,10 @@ const Actions = ({
             title: strings.renameFile(),
             defaultValue: attachment.filename,
             positivePress: async (value) => {
-              if (value && value.length > 0) {
+              try {
+                if (!value || !value.trim()) {
+                  throw new Error(strings.nameIsRequired());
+                }
                 await db.attachments.add({
                   hash: attachment.hash,
                   filename: value
@@ -173,8 +176,12 @@ const Actions = ({
                   message: `Attachment renamed to ${value}`,
                   type: "success"
                 });
+
+                return true;
+              } catch (e) {
+                ToastManager.error(e as Error, undefined, "local");
+                return false;
               }
-              return true;
             },
             positiveText: strings.rename()
           });
