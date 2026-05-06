@@ -76,12 +76,7 @@ export const ForgotPassword = ({ userEmail }: { userEmail: string }) => {
       setSent(true);
     } catch (e) {
       setLoading(false);
-      ToastManager.show({
-        heading: strings.recoveryEmailFailed(),
-        message: (e as Error).message,
-        type: "error",
-        context: "local"
-      });
+      formRef.current.setError("email", (e as Error).message);
     }
   };
 
