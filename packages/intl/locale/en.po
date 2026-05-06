@@ -1770,6 +1770,10 @@ msgstr "Confirm new password"
 msgid "Confirm password"
 msgstr "Confirm password"
 
+#: src/strings.ts:2661
+msgid "Confirm password required"
+msgstr "Confirm password required"
+
 #: src/strings.ts:1487
 msgid "Confirm pin"
 msgstr "Confirm pin"
@@ -4540,6 +4544,10 @@ msgstr "Password not entered"
 msgid "Password protection"
 msgstr "Password protection"
 
+#: src/strings.ts:2660
+msgid "Password required"
+msgstr "Password required"
+
 #: src/strings.ts:809
 msgid "Password updated"
 msgstr "Password updated"
@@ -4647,6 +4655,7 @@ msgid "Please enable automatic backups to avoid losing important data."
 msgstr "Please enable automatic backups to avoid losing important data."
 
 #: src/strings.ts:1512
+#: src/strings.ts:2662
 msgid "Please enter a valid email address"
 msgstr "Please enter a valid email address"
 
@@ -7662,8 +7671,8 @@ msgid "Your support request has been forwarded"
 msgstr "Your support request has been forwarded"
 
 #: src/strings.ts:2062
-msgid "Your support request has been forwarded to our support team. We will get back to you via email at {email}. If this email is not reachable or incorrect, please send us an email directly at support@notesnook.com."
-msgstr "Your support request has been forwarded to our support team. We will get back to you via email at {email}. If this email is not reachable or incorrect, please send us an email directly at support@notesnook.com."
+msgid "Your support request has been forwarded to our support team. We will get back to you via email as soon as possible. If you don't receive an email from us within 24-48 hours, please send us an email directly at support@notesnook.com."
+msgstr "Your support request has been forwarded to our support team. We will get back to you via email as soon as possible. If you don't receive an email from us within 24-48 hours, please send us an email directly at support@notesnook.com."
 
 #: src/strings.ts:956
 msgid "Your tags"
