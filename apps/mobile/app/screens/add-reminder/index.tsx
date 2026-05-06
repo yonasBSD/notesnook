@@ -172,9 +172,15 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
 
   async function saveReminder() {
     try {
-      if (!(await Notifications.checkAndRequestPermissions(true)))
-        throw new Error(strings.noNotificationPermission());
-      if (!date && reminderMode !== ReminderModes.Permanent) return;
+      if (!title.current?.trim()) throw new Error(strings.setTitleError());
+      if (
+        date.getTime() < Date.now() &&
+        reminderMode === "once" &&
+        !props.route.params.reminder
+      ) {
+        throw new Error(strings.dateError());
+      }
+
       if (
         reminderMode === ReminderModes.Repeat &&
         recurringMode !== "day" &&
@@ -183,14 +189,9 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
       )
         throw new Error(strings.selectDayError());
 
-      if (!title.current) throw new Error(strings.setTitleError());
-      if (
-        date.getTime() < Date.now() &&
-        reminderMode === "once" &&
-        !props.route.params.reminder
-      ) {
-        throw new Error(strings.dateError());
-      }
+      if (!(await Notifications.checkAndRequestPermissions(true)))
+        throw new Error(strings.noNotificationPermission());
+      if (!date && reminderMode !== ReminderModes.Permanent) return;
 
       date.setSeconds(0, 0);
 
