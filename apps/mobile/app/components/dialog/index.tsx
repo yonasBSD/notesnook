@@ -173,7 +173,7 @@ export const Dialog = ({ context = "global" }: { context?: string }) => {
       closeOnTouch={!dialogInfo.disableBackdropClosing}
       background={dialogInfo.background}
       transparent={
-        dialogInfo.transparent === undefined ? true : dialogInfo.transparent
+        dialogInfo.transparent === undefined ? false : dialogInfo.transparent
       }
       onShow={async () => {
         if (dialogInfo.input && !dialogInfo.form) {
