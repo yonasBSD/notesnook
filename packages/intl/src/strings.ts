@@ -2659,5 +2659,6 @@ Use this if changes from other devices are not appearing on this device. This wi
     t`Value must be between ${min} and ${max}`,
   passwordRequired: () => t`Password required`,
   confirmPasswordRequired: () => t`Confirm password required`,
-  enterAValidEmailAddress: () => t`Please enter a valid email address`
+  enterAValidEmailAddress: () => t`Please enter a valid email address`,
+  giftCodeRequired: () => t`Gift code required`
 };

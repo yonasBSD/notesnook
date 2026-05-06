@@ -3101,6 +3101,10 @@ msgstr "Getting information"
 msgid "Getting recovery codes"
 msgstr "Getting recovery codes"
 
+#: src/strings.ts:2663
+msgid "Gift code required"
+msgstr "Gift code required"
+
 #: src/strings.ts:2172
 msgid "GNU GENERAL PUBLIC LICENSE Version 3"
 msgstr "GNU GENERAL PUBLIC LICENSE Version 3"

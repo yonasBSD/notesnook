@@ -238,13 +238,21 @@ export const settingsGroups: SettingSection[] = [
             inputPlaceholder: strings.code(),
             positiveText: strings.redeem(),
             positivePress: async (value) => {
-              db.subscriptions.redeemCode(value).catch((e) => {
+              try {
+                if (!value || !value.trim()) {
+                  throw new Error(strings.giftCodeRequired());
+                }
+
+                await db.subscriptions.redeemCode(value);
+                return true;
+              } catch (e) {
                 ToastManager.show({
                   heading: "Error redeeming code",
                   message: (e as Error).message,
                   type: "error"
                 });
-              });
+                return false;
+              }
             }
           });
         }
