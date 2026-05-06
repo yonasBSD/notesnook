@@ -2660,5 +2660,8 @@ Use this if changes from other devices are not appearing on this device. This wi
   passwordRequired: () => t`Password required`,
   confirmPasswordRequired: () => t`Confirm password required`,
   enterAValidEmailAddress: () => t`Please enter a valid email address`,
-  giftCodeRequired: () => t`Gift code required`
+  giftCodeRequired: () => t`Gift code required`,
+  deleteAttachment: () => t`Delete attachment`,
+  deleteAttachmentConfirm: () =>
+    t`Are you sure you want to delete this attachment?`
 };

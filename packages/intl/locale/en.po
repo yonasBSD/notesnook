@@ -935,6 +935,10 @@ msgstr "Are you sure you want to clear all logs from {key}?"
 msgid "Are you sure you want to clear trash?"
 msgstr "Are you sure you want to clear trash?"
 
+#: src/strings.ts:2666
+msgid "Are you sure you want to delete this attachment?"
+msgstr "Are you sure you want to delete this attachment?"
+
 #: src/strings.ts:1542
 msgid "Are you sure you want to logout and clear all data stored on THIS DEVICE?"
 msgstr "Are you sure you want to logout and clear all data stored on THIS DEVICE?"
@@ -2141,6 +2145,10 @@ msgstr "Delete"
 #: src/strings.ts:1076
 msgid "Delete account"
 msgstr "Delete account"
+
+#: src/strings.ts:2664
+msgid "Delete attachment"
+msgstr "Delete attachment"
 
 #: src/strings.ts:1319
 msgid "Delete collapsed section"

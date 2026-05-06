@@ -177,26 +177,48 @@ const Actions = ({
     {
       name: strings.delete(),
       onPress: async () => {
-        const relations = await db.relations.to(attachment, "note").get();
-        await db.attachments.remove(attachment.hash, false);
-        setAttachments();
-        eSendEvent(eDBItemUpdate, attachment.id);
-        relations
-          .map((relation) => relation.fromId)
-          .forEach(async (id) => {
-            useTabStore.getState().forEachNoteTab(id, async (tab) => {
-              const isFocused = useTabStore.getState().currentTab === tab.id;
-              if (isFocused) {
-                eSendEvent(eOnLoadNote, {
-                  item: await db.notes.note(id),
-                  forced: true
-                });
-              } else {
-                editorController.current.commands.setLoading(true, tab.id);
-              }
-            });
-          });
         close?.();
+        setTimeout(() => {
+          presentDialog({
+            title: strings.deleteAttachment(),
+            paragraph: strings.deleteAttachmentConfirm(),
+            positiveText: strings.yes(),
+            negativeText: strings.no(),
+            positiveType: "errorShade",
+            positivePress: async () => {
+              try {
+                const relations = await db.relations
+                  .to(attachment, "note")
+                  .get();
+                await db.attachments.remove(attachment.hash, false);
+                setAttachments();
+                eSendEvent(eDBItemUpdate, attachment.id);
+                relations
+                  .map((relation) => relation.fromId)
+                  .forEach(async (id) => {
+                    useTabStore.getState().forEachNoteTab(id, async (tab) => {
+                      const isFocused =
+                        useTabStore.getState().currentTab === tab.id;
+                      if (isFocused) {
+                        eSendEvent(eOnLoadNote, {
+                          item: await db.notes.note(id),
+                          forced: true
+                        });
+                      } else {
+                        editorController.current.commands.setLoading(
+                          true,
+                          tab.id
+                        );
+                      }
+                    });
+                  });
+                return true;
+              } catch (e) {
+                return false;
+              }
+            }
+          });
+        }, 500);
       },
       icon: "delete-outline"
     }
