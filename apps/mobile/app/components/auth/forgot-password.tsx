@@ -47,11 +47,6 @@ export const ForgotPassword = ({ userEmail }: { userEmail: string }) => {
 
   const sendRecoveryEmail = async () => {
     if (formRef.current.validateField("email")) {
-      ToastManager.show({
-        heading: strings.emailRequired(),
-        type: "error",
-        context: "local"
-      });
       return;
     }
 
