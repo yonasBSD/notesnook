@@ -35,7 +35,6 @@ import { db } from "../../common/database";
 import { Dialog } from "../../components/dialog";
 import { Header } from "../../components/header";
 import { Button } from "../../components/ui/button";
-import Input from "../../components/ui/input";
 import { ReminderTime } from "../../components/ui/reminder-time";
 import Paragraph from "../../components/ui/typography/paragraph";
 import { DDS } from "../../services/device-detection";
