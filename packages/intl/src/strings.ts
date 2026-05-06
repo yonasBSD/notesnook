@@ -2663,5 +2663,6 @@ Use this if changes from other devices are not appearing on this device. This wi
   giftCodeRequired: () => t`Gift code required`,
   deleteAttachment: () => t`Delete attachment`,
   deleteAttachmentConfirm: () =>
-    t`Are you sure you want to delete this attachment?`
+    t`Are you sure you want to delete this attachment?`,
+  attachmentDeleted: () => t`Attachment deleted`
 };

@@ -191,6 +191,10 @@ const Actions = ({
                   .to(attachment, "note")
                   .get();
                 await db.attachments.remove(attachment.hash, false);
+                ToastManager.show({
+                  type: "success",
+                  message: strings.attachmentDeleted()
+                });
                 setAttachments();
                 eSendEvent(eDBItemUpdate, attachment.id);
                 relations

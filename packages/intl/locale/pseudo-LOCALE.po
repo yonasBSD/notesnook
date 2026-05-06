@@ -992,6 +992,10 @@ msgstr ""
 msgid "Attachment"
 msgstr ""
 
+#: src/strings.ts:2663
+msgid "Attachment deleted"
+msgstr ""
+
 #: src/strings.ts:2458
 msgid "Attachment manager"
 msgstr ""
