@@ -992,7 +992,7 @@ msgstr "attachment"
 msgid "Attachment"
 msgstr "Attachment"
 
-#: src/strings.ts:2663
+#: src/strings.ts:2667
 msgid "Attachment deleted"
 msgstr "Attachment deleted"
 
@@ -6663,6 +6663,10 @@ msgstr "Title"
 #: src/strings.ts:1157
 msgid "Title format"
 msgstr "Title format"
+
+#: src/strings.ts:2668
+msgid "Title is required"
+msgstr "Title is required"
 
 #: src/strings.ts:1188
 msgid "To use app lock, you must enable biometrics such as Fingerprint lock or Face ID on your phone."

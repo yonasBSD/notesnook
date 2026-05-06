@@ -59,6 +59,10 @@ import { TimeSince } from "../../components/ui/time-since";
 import Heading from "../../components/ui/typography/heading";
 import { eOnLoadNote } from "../../utils/events";
 import { fluidTabsRef } from "../../utils/global-refs";
+import FormInput, {
+  createFormRef,
+  validators
+} from "../../components/ui/input/form-input";
 
 const ReminderModes =
   Platform.OS === "ios"
@@ -113,7 +117,12 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
   const [repeatFrequency, setRepeatFrequency] = useState(1);
   const referencedItem = reference ? (reference as Note) : null;
   const recurringReminderFeature = useIsFeatureAvailable("recurringReminders");
-
+  const formRef = useRef(
+    createFormRef({
+      title: reminder?.title || referencedItem?.title || "",
+      description: reminder?.description || referencedItem?.headline || ""
+    })
+  );
   const title = useRef<string | undefined>(
     !reminder ? referencedItem?.title : reminder?.title
   );
@@ -172,7 +181,7 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
 
   async function saveReminder() {
     try {
-      if (!title.current?.trim()) throw new Error(strings.setTitleError());
+      if (!formRef.current.validate()) return;
       if (
         date.getTime() < Date.now() &&
         reminderMode === "once" &&
@@ -262,7 +271,10 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
         >
-          <Input
+          <FormInput
+            name="title"
+            validators={[validators.required(strings.titleIsRequired())]}
+            formRef={formRef}
             fwdRef={titleRef}
             defaultValue={reminder?.title || referencedItem?.title}
             placeholder={strings.remindeMeOf()}
@@ -271,12 +283,15 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
             wrapperStyle={{
               marginTop: DefaultAppStyles.GAP_VERTICAL
             }}
-            onSubmit={() => {
+            onSubmitEditing={() => {
               descriptionRef.current?.focus();
             }}
           />
 
-          <Input
+          <FormInput
+            name="description"
+            validators={[]}
+            formRef={formRef}
             defaultValue={
               reminder ? reminder?.description : referencedItem?.headline
             }
