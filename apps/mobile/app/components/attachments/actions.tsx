@@ -153,24 +153,32 @@ const Actions = ({
     {
       name: strings.rename(),
       onPress: () => {
-        presentDialog({
-          input: true,
-          title: strings.renameFile(),
-          defaultValue: attachment.filename,
-          positivePress: async (value) => {
-            if (value && value.length > 0) {
-              await db.attachments.add({
-                hash: attachment.hash,
-                filename: value
-              });
-              setFilename(value);
-              setAttachments();
-              eSendEvent(eDBItemUpdate, attachment.id);
-            }
-            return true;
-          },
-          positiveText: strings.rename()
-        });
+        close?.();
+        setTimeout(() => {
+          presentDialog({
+            input: true,
+            inputPlaceholder: strings.enterTitle(),
+            title: strings.renameFile(),
+            defaultValue: attachment.filename,
+            positivePress: async (value) => {
+              if (value && value.length > 0) {
+                await db.attachments.add({
+                  hash: attachment.hash,
+                  filename: value
+                });
+                setFilename(value);
+                setAttachments();
+                eSendEvent(eDBItemUpdate, attachment.id);
+                ToastManager.show({
+                  message: `Attachment renamed to ${value}`,
+                  type: "success"
+                });
+              }
+              return true;
+            },
+            positiveText: strings.rename()
+          });
+        }, 500);
       },
       icon: "form-textbox"
     },
