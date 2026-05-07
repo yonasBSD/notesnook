@@ -22,7 +22,7 @@ import { Attachment, Note, VirtualizedGrouping } from "@notesnook/core";
 import { useThemeColors } from "@notesnook/theme";
 import Clipboard from "@react-native-clipboard/clipboard";
 import React, { RefObject, useEffect, useState } from "react";
-import { View } from "react-native";
+import { TextInput, View } from "react-native";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../common/database";
@@ -59,6 +59,7 @@ import Paragraph from "../ui/typography/paragraph";
 import { strings } from "@notesnook/intl";
 import { DefaultAppStyles } from "../../utils/styles";
 import Navigation from "../../services/navigation";
+import { createFormRef, validators } from "../ui/input/form-input";
 
 const Actions = ({
   attachment,
@@ -156,31 +157,40 @@ const Actions = ({
         close?.();
         setTimeout(() => {
           presentDialog({
-            input: true,
-            inputPlaceholder: strings.enterTitle(),
             title: strings.renameFile(),
-            defaultValue: attachment.filename,
-            positivePress: async (value) => {
-              try {
-                if (!value || !value.trim()) {
-                  throw new Error(strings.nameIsRequired());
+            form: {
+              formRef: createFormRef({
+                name: attachment.filename
+              }),
+              items: [
+                {
+                  name: "name",
+                  defaultValue: attachment.filename,
+                  placeholder: strings.enterTitle(),
+                  ref: React.createRef<TextInput | null>(),
+                  validators: [validators.required(strings.nameIsRequired())]
                 }
-                await db.attachments.add({
-                  hash: attachment.hash,
-                  filename: value
-                });
-                setFilename(value);
-                setAttachments();
-                eSendEvent(eDBItemUpdate, attachment.id);
-                ToastManager.show({
-                  message: `Attachment renamed to ${value}`,
-                  type: "success"
-                });
+              ],
+              onFormSubmit: async (form) => {
+                try {
+                  const value = form.getValue("name");
+                  await db.attachments.add({
+                    hash: attachment.hash,
+                    filename: value
+                  });
+                  setFilename(value);
+                  setAttachments();
+                  eSendEvent(eDBItemUpdate, attachment.id);
+                  ToastManager.show({
+                    message: `Attachment renamed to ${value}`,
+                    type: "success"
+                  });
 
-                return true;
-              } catch (e) {
-                ToastManager.error(e as Error, undefined, "local");
-                return false;
+                  return true;
+                } catch (e) {
+                  form.setError("name", (e as Error).message);
+                  return false;
+                }
               }
             },
             positiveText: strings.rename()
