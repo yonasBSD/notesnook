@@ -992,7 +992,7 @@ msgstr ""
 msgid "Attachment"
 msgstr ""
 
-#: src/strings.ts:2663
+#: src/strings.ts:2667
 msgid "Attachment deleted"
 msgstr ""
 
@@ -6621,6 +6621,10 @@ msgstr ""
 
 #: src/strings.ts:1157
 msgid "Title format"
+msgstr ""
+
+#: src/strings.ts:2668
+msgid "Title is required"
 msgstr ""
 
 #: src/strings.ts:1188
