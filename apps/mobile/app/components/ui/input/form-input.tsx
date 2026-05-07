@@ -22,6 +22,7 @@ import {
   ColorValue,
   TextInput,
   TextInputProps,
+  TextStyle,
   TouchableOpacity,
   View,
   ViewStyle
@@ -220,6 +221,7 @@ interface FormInputProps extends TextInputProps {
   inputStyle?: TextInputProps["style"];
   containerStyle?: ViewStyle;
   wrapperStyle?: ViewStyle;
+  errorStyle?: TextStyle;
 }
 
 export function FormInput({
@@ -245,6 +247,7 @@ export function FormInput({
   onBlur,
   onPress,
   onChangeText,
+  errorStyle,
   ...restProps
 }: FormInputProps) {
   const { colors, isDark } = useThemeColors();
@@ -391,7 +394,7 @@ export function FormInput({
       {fieldError ? (
         <Paragraph
           size={AppFontSize.xs}
-          style={{ marginTop: 5, color: colors.error.icon }}
+          style={[{ marginTop: 5, color: colors.error.icon }, errorStyle]}
         >
           <AppIcon
             color={colors.error.accent}
