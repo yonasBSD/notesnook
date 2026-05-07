@@ -62,6 +62,7 @@ import FormInput, {
   createFormRef,
   validators
 } from "../../components/ui/input/form-input";
+import AppIcon from "../../components/ui/AppIcon";
 
 const ReminderModes =
   Platform.OS === "ios"
@@ -140,6 +141,8 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
         : null,
     [reminder?.id]
   );
+  const [dateError, setDateError] = useState<string>();
+  const [selectDayError, setSelectDayError] = useState<string>();
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -151,6 +154,7 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
 
   const handleConfirm = (date: Date) => {
     timer.current = setTimeout(() => {
+      setDateError(undefined);
       hideDatePicker();
       setDate(date);
     }, 10);
@@ -182,7 +186,8 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
     try {
       if (!formRef.current.validate()) return;
       if (date.getTime() < Date.now() && reminderMode === "once") {
-        throw new Error(strings.dateError());
+        setDateError(strings.dateError());
+        return;
       }
 
       if (
@@ -190,8 +195,10 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
         recurringMode !== "day" &&
         recurringMode !== "year" &&
         selectedDays.length === 0
-      )
-        throw new Error(strings.selectDayError());
+      ) {
+        setSelectDayError(strings.selectDayError());
+        return;
+      }
 
       if (!date && reminderMode !== ReminderModes.Permanent) return;
 
@@ -473,6 +480,22 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
                         />
                       ))}
               </ScrollView>
+              {selectDayError ? (
+                <Paragraph
+                  size={AppFontSize.xs}
+                  style={{
+                    marginTop: DefaultAppStyles.GAP_VERTICAL,
+                    color: colors.error.icon
+                  }}
+                >
+                  <AppIcon
+                    color={colors.error.accent}
+                    name="alert-circle-outline"
+                    size={AppFontSize.sm - 1}
+                  />{" "}
+                  {selectDayError}
+                </Paragraph>
+              ) : null}
             </View>
           ) : null}
 
@@ -538,6 +561,23 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
                   }}
                 />
               )}
+
+              {dateError ? (
+                <Paragraph
+                  size={AppFontSize.xs}
+                  style={{
+                    marginTop: DefaultAppStyles.GAP_VERTICAL,
+                    color: colors.error.icon
+                  }}
+                >
+                  <AppIcon
+                    color={colors.error.accent}
+                    name="alert-circle-outline"
+                    size={AppFontSize.sm - 1}
+                  />{" "}
+                  {dateError}
+                </Paragraph>
+              ) : null}
             </View>
           )}
 
