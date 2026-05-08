@@ -625,7 +625,7 @@ export const MFARecoveryCodes = ({
                 ToastManager.show({
                   heading: strings.codesCopied(),
                   type: "success",
-                  context: "global"
+                  context: "local"
                 });
               }}
               style={{
