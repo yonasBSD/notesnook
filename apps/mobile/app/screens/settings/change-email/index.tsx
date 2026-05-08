@@ -16,22 +16,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import { strings } from "@notesnook/intl";
+import { useThemeColors } from "@notesnook/theme";
 import React, { useRef, useState } from "react";
 import { TextInput, View } from "react-native";
 import { db } from "../../../common/database";
-import { eSendEvent, ToastManager } from "../../../services/event-manager";
-import { eUserLoggedIn } from "../../../utils/events";
-import { strings } from "@notesnook/intl";
-import { DefaultAppStyles } from "../../../utils/styles";
+import { Button } from "../../../components/ui/button";
 import FormInput, {
   createFormRef,
   validators
 } from "../../../components/ui/input/form-input";
-import { Button } from "../../../components/ui/button";
-import Paragraph from "../../../components/ui/typography/paragraph";
-import { useThemeColors } from "@notesnook/theme";
-import { AppFontSize } from "../../../utils/size";
+import { eSendEvent, ToastManager } from "../../../services/event-manager";
 import Navigation from "../../../services/navigation";
+import { eUserLoggedIn } from "../../../utils/events";
+import { DefaultAppStyles } from "../../../utils/styles";
 
 enum EmailChangeSteps {
   verify,
