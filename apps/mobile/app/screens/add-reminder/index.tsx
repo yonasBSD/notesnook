@@ -62,6 +62,7 @@ import FormInput, {
   createFormRef,
   validators
 } from "../../components/ui/input/form-input";
+import AppIcon from "../../components/ui/AppIcon";
 
 const ReminderModes =
   Platform.OS === "ios"
@@ -140,6 +141,8 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
         : null,
     [reminder?.id]
   );
+  const [dateError, setDateError] = useState<string>();
+  const [selectDayError, setSelectDayError] = useState<string>();
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -151,6 +154,7 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
 
   const handleConfirm = (date: Date) => {
     timer.current = setTimeout(() => {
+      setDateError(undefined);
       hideDatePicker();
       setDate(date);
     }, 10);
@@ -181,12 +185,9 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
   async function saveReminder() {
     try {
       if (!formRef.current.validate()) return;
-      if (
-        date.getTime() < Date.now() &&
-        reminderMode === "once" &&
-        !props.route.params.reminder
-      ) {
-        throw new Error(strings.dateError());
+      if (date.getTime() < Date.now() && reminderMode === "once") {
+        setDateError(strings.dateError());
+        return;
       }
 
       if (
@@ -194,12 +195,15 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
         recurringMode !== "day" &&
         recurringMode !== "year" &&
         selectedDays.length === 0
-      )
-        throw new Error(strings.selectDayError());
+      ) {
+        setSelectDayError(strings.selectDayError());
+        return;
+      }
+
+      if (!date && reminderMode !== ReminderModes.Permanent) return;
 
       if (!(await Notifications.checkAndRequestPermissions(true)))
         throw new Error(strings.noNotificationPermission());
-      if (!date && reminderMode !== ReminderModes.Permanent) return;
 
       date.setSeconds(0, 0);
 
@@ -476,6 +480,22 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
                         />
                       ))}
               </ScrollView>
+              {selectDayError ? (
+                <Paragraph
+                  size={AppFontSize.xs}
+                  style={{
+                    marginTop: DefaultAppStyles.GAP_VERTICAL,
+                    color: colors.error.icon
+                  }}
+                >
+                  <AppIcon
+                    color={colors.error.accent}
+                    name="alert-circle-outline"
+                    size={AppFontSize.sm - 1}
+                  />{" "}
+                  {selectDayError}
+                </Paragraph>
+              ) : null}
             </View>
           ) : null}
 
@@ -491,16 +511,23 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
               <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="datetime"
+                minimumDate={
+                  reminderMode === "once" ? dayjs().toDate() : new Date(0)
+                }
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
                 isDarkModeEnabled={isDark}
                 firstDayOfWeek={weekFormat === "Mon" ? 1 : 0}
                 is24Hour={db.settings.getTimeFormat() === "24-hour"}
                 date={date || new Date(Date.now())}
+                themeVariant={isDark ? "dark" : "light"}
               />
 
               <DatePicker
                 date={date}
+                minimumDate={
+                  reminderMode === "once" ? dayjs().toDate() : new Date(0)
+                }
                 maximumDate={dayjs(date).add(3, "months").toDate()}
                 onDateChange={handleConfirm}
                 theme={isDark ? "dark" : "light"}
@@ -534,6 +561,23 @@ export default function AddReminder(props: NavigationProps<"AddReminder">) {
                   }}
                 />
               )}
+
+              {dateError ? (
+                <Paragraph
+                  size={AppFontSize.xs}
+                  style={{
+                    marginTop: DefaultAppStyles.GAP_VERTICAL,
+                    color: colors.error.icon
+                  }}
+                >
+                  <AppIcon
+                    color={colors.error.accent}
+                    name="alert-circle-outline"
+                    size={AppFontSize.sm - 1}
+                  />{" "}
+                  {dateError}
+                </Paragraph>
+              ) : null}
             </View>
           )}
 
