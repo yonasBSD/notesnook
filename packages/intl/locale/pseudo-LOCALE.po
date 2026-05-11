@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: pseudo-LOCALE\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #: src/strings.ts:2421
 msgid " \"Notebook > Notes\""
@@ -1951,8 +1957,13 @@ msgstr ""
 msgid "Current note"
 msgstr ""
 
+#: src/strings.ts:1479
 #: src/strings.ts:1485
 msgid "Current password"
+msgstr ""
+
+#: src/strings.ts:2670
+msgid "Current password required"
 msgstr ""
 
 #: src/strings.ts:1229
@@ -4373,10 +4384,6 @@ msgstr ""
 
 #: src/strings.ts:641
 msgid "Old - new"
-msgstr ""
-
-#: src/strings.ts:1479
-msgid "Old password"
 msgstr ""
 
 #: src/strings.ts:1835

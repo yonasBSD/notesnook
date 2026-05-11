@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #: src/strings.ts:2421
 msgid " \"Notebook > Notes\""
@@ -1962,9 +1968,14 @@ msgstr "Curate the toolbar that fits your needs and matches your personality."
 msgid "Current note"
 msgstr "Current note"
 
+#: src/strings.ts:1479
 #: src/strings.ts:1485
 msgid "Current password"
 msgstr "Current password"
+
+#: src/strings.ts:2670
+msgid "Current password required"
+msgstr "Current password required"
 
 #: src/strings.ts:1229
 msgid "Current path: {path}"
@@ -4400,10 +4411,6 @@ msgstr "Okay"
 #: src/strings.ts:641
 msgid "Old - new"
 msgstr "Old - new"
-
-#: src/strings.ts:1479
-msgid "Old password"
-msgstr "Old password"
 
 #: src/strings.ts:1835
 msgid "Older version"

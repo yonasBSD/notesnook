@@ -1476,7 +1476,7 @@ $day$: Current day (eg. Monday)`,
   someNotesPublished: () => t`Some notes are published`,
   unpublishToDelete: () => t`Unpublish notes to delete them`,
   filterAttachments: () => t`Filter attachments by filename, type or hash`,
-  oldPassword: () => t`Old password`,
+  oldPassword: () => t`Current password`,
   newPassword: () => t`New password`,
   email: () => t`Email`,
   emailInvalid: () => t`Invalid email`,
@@ -2666,5 +2666,6 @@ Use this if changes from other devices are not appearing on this device. This wi
     t`Are you sure you want to delete this attachment?`,
   attachmentDeleted: () => t`Attachment deleted`,
   titleIsRequired: () => t`Title is required`,
-  nameIsRequired: () => t`Name is required.`
+  nameIsRequired: () => t`Name is required.`,
+  currentPasswordRequired: () => t`Current password required`
 };
