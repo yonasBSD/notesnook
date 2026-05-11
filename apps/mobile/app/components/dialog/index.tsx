@@ -67,15 +67,13 @@ export const Dialog = ({ context = "global" }: { context?: string }) => {
     // Handle form submission if form is available
     if (dialogInfo?.form && formRef.current) {
       inputRef.current?.blur();
-      setLoading(true);
       try {
         const isValid = await formRef.current.validate();
         if (!isValid) {
-          setLoading(false);
           return;
         }
-
         if (dialogInfo.form.onFormSubmit) {
+          setLoading(true);
           const result = await dialogInfo.form.onFormSubmit(formRef.current);
           if (result === false) {
             setLoading(false);
@@ -93,7 +91,7 @@ export const Dialog = ({ context = "global" }: { context?: string }) => {
       let result = false;
       try {
         result = await dialogInfo.positivePress(
-          values.current.inputValue || dialogInfo.defaultValue,
+          values.current.inputValue,
           checked
         );
       } catch (e) {

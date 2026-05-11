@@ -2665,5 +2665,6 @@ Use this if changes from other devices are not appearing on this device. This wi
   deleteAttachmentConfirm: () =>
     t`Are you sure you want to delete this attachment?`,
   attachmentDeleted: () => t`Attachment deleted`,
-  titleIsRequired: () => t`Title is required`
+  titleIsRequired: () => t`Title is required`,
+  nameIsRequired: () => t`Name is required.`
 };
